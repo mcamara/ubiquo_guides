@@ -503,6 +503,30 @@ Valid params for filters and options are:
 * sort_order and order_by for ordering.
 * page and per_page params for pagination. (if using paginated_filter_search).
 
+h5. Example 1: Looking for the first five articles categorized with tag1
+
+<ruby>
+# app/models/article.rb
+class Article < ActiveRecord::Base
+  categorized_with :tag, :size => :many, :from => "tags"
+  filtered_search_scopes :enable => [ :tag, :writter ]
+  belongs_to :writter, :class_name => 'UbiquoUser', :foreign_key => 'user_id'
+end
+</ruby>
+
+<ruby>
+@articles_pages, @articles = Article.paginated_filtered_search({"filter_tag" => "tag1",:per_page => 5, :page => 1})
+</ruby>
+
+@article_pages will point to the previous and next page if they exist, otherwise, they will be nil.
+
+h5. Example 2: Looking for all articles written by an Ubiquo User with id 1 sorted by published date
+
+<ruby>
+@articles = Article.filtered_search({"filter_writter" => 1, :order_by => 'published_at' })
+</ruby>
+
+
 h3. Relation selector
 
 Ubiquo relation selector provides an easy way to implement form-controls on model to model relations. This feature offers a compact view to work with different relation types, like belongs_to and has_many through different controls.

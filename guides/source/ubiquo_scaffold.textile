@@ -201,7 +201,7 @@ h5. Index
 To start, check out index action in +app/controllers/ubiquo/books_controller.rb+, we can view that this action only contains a call to +filtered_search+ Book class method. The results are used for +paginate+ method,
 implemented in ubiquo_core plugin.
 
-NOTE. The params that +paginated_filtered_search+ method needs are explained with more details in the *filters section*
+NOTE. The params that +paginated_filtered_search+ method needs are explained with more details in the "filters section":ubiquo_core.html#filtered-search
 
 <ruby>
 

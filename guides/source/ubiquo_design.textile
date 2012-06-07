@@ -165,7 +165,7 @@ The first step is to use the ubiquo_widget generator to build the skeleton:
 It will create the associated model, the widget controller, and the views for the widget. Each widget has two views: the public one, and the ubiquo design form (in case it's an editable widget).
 
 <shell>
-  script/generate ubiquo_widget last_news news_to_show:integer
+  script/generate ubiquo_widget last_news_list news_to_show:integer
 </shell>
 
 h4. Widget files
@@ -175,17 +175,17 @@ Once the generator is executed, you'll see how the needed files are automaticall
 <shell>
   create  app/models/widgets
   exists  app/widgets
-  create  app/views/widgets/last_news/ubiquo
+  create  app/views/widgets/last_news_list/ubiquo
   exists  test/unit/widgets
   exists  test/functional/widgets/ubiquo
-  create  app/widgets/last_news_widget.rb
-  create  app/views/widgets/last_news/show.html.erb
-  create  app/views/widgets/last_news/ubiquo/edit.html.erb
-  create  app/models/widgets/last_news.rb
-  create  test/unit/widgets/last_news_test.rb
-  create  test/functional/widgets/last_news_test.rb
-  create  test/functional/widgets/ubiquo/last_news_test.rb
-  widget  last_news
+  create  app/widgets/last_news_list_widget.rb
+  create  app/views/widgets/last_news_list/show.html.erb
+  create  app/views/widgets/last_news_list/ubiquo/edit.html.erb
+  create  app/models/widgets/last_news_list.rb
+  create  test/unit/widgets/last_news_list_test.rb
+  create  test/functional/widgets/last_news_list_test.rb
+  create  test/functional/widgets/ubiquo/last_news_list_test.rb
+  widget  last_news_list
 </shell>
 
 We can see a widget as a sum of
@@ -197,10 +197,10 @@ So, in essence a widget follows the MVC pattern
 
 h4. Widget behaviours
 
-Our freshly created last_news_widget.rb looks like this:
+Our freshly created last_news_list_widget.rb looks like this:
 
 <ruby>
-  Widget.behaviour :last_news do |widget|
+  Widget.behaviour :last_news_list do |widget|
     ...
   end
 </ruby>
@@ -212,14 +212,14 @@ h4. Creating the widget model
 
 A widget has an associated model (subclass of _Widget_), since we are always rendering an instance of a model.
 
-You can edit the associated model (+app/models/widgets/last_news.rb+) and use the class method _allowed_options_ to define the configurable attributes. We can also add validations over these fields:
+You can edit the associated model (+app/models/widgets/last_news_list.rb+) and use the class method _allowed_options_ to define the configurable attributes. We can also add validations over these fields:
 
 <ruby>
-  class LastNews < Widget
+  class LastNewsList < Widget
     self.allowed_options = [:news_to_show]
     validates_numericality_of :news_to_show
 
-    def last_news(number = nil)
+    def last_news_list(number = nil)
       News.all(:limit => number || news_to_show, :order => :publish_date)
     end
   end
@@ -229,11 +229,11 @@ TIP: The allowed_options are accessible from the widget instance. Inside the Wid
 
 h4. Implementing the widget behaviour
 
-Edit +widgets/last_news_widget.rb+ to use the widget method we have just implemented:
+Edit +widgets/last_news_list_widget.rb+ to use the widget method we have just implemented:
 
 <ruby>
-  Widget.behaviour :last_news do |widget|
-    @news = widget.last_news(params[:max_news])
+  Widget.behaviour :last_news_list do |widget|
+    @news_list = widget.last_news_list(params[:max_news])
   end
 </ruby>
 
@@ -248,8 +248,8 @@ The public view is the part that will be shown on the public page. The file of t
 For our example we can write a very simple public view for our last_news widget:
 
 <erb>
-  <%# app/views/widgets/last_news/show.html.erb %>
-  <% @news.each do |news| %>
+  <%# app/views/widgets/last_news_list/show.html.erb %>
+  <% @news_list.each do |news| %>
     <p><%= news.body %></p>
   <% end %>
 </erb>
@@ -259,7 +259,7 @@ The ubiquo form view provides a form to change the allowed_options of the widget
 As the widget is configurable (to set the default number of :news_to_show), we can prepare an ubiquo view, which could look like this:
 
 <erb>
-  <%# app/views/widgets/last_news/ubiquo/_form.html.erb %>
+  <%# app/views/widgets/last_news_list/ubiquo/edit.html.erb %>
   <%= widget_header widget %>
   <% widget_form(page, widget) do |f| %>
       <%= f.label :news_to_show, Widget.human_attribute_name :news_to_show %><br/>
