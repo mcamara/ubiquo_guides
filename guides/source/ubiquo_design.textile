@@ -217,7 +217,7 @@ You can edit the associated model (+app/models/widgets/last_news_list.rb+) and u
 <ruby>
   class LastNewsList < Widget
     self.allowed_options = [:news_to_show]
-    validates_numericality_of :news_to_show
+    validates_numericality_of :news_to_show, :greater_than => 0
 
     def last_news_list(number = nil)
       News.all(:limit => number || news_to_show, :order => :publish_date)
