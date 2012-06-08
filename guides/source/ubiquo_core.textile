@@ -509,8 +509,8 @@ h5. Example 1: Looking for the first five articles categorized with tag1
 # app/models/article.rb
 class Article < ActiveRecord::Base
   categorized_with :tag, :size => :many, :from => "tags"
-  filtered_search_scopes :enable => [ :tag, :writter ]
-  belongs_to :writter, :class_name => 'UbiquoUser', :foreign_key => 'user_id'
+  filtered_search_scopes :enable => [ :tag, :writer ]
+  belongs_to :writer, :class_name => 'UbiquoUser', :foreign_key => 'user_id'
 end
 </ruby>
 
@@ -523,7 +523,7 @@ end
 h5. Example 2: Looking for all articles written by an Ubiquo User with id 1 sorted by published date
 
 <ruby>
-@articles = Article.filtered_search({"filter_writter" => 1, :order_by => 'published_at' })
+@articles = Article.filtered_search({"filter_writer" => 1, :order_by => 'published_at' })
 </ruby>
 
 
