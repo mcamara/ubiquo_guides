@@ -170,7 +170,7 @@ Model.<relation_name>(<list of categories>)
 </ruby>
 
 Moreover, we can use filtered_search and paginated_filtered_search (for further information
-read "filters section":ubiquo_core.html#filtered-search). To do that, we should write write the macro 
+read "filters section":ubiquo_core.html#filtered-search). To do that, we should write the macro 
 inside the model before filtering it. Once the macro is written, we can use filter functions wherever
 we need them.
 
